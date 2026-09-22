@@ -1,8 +1,26 @@
-# Caldero Verde API
+# Caldero Verde — Prototipo MVP
 
-Aplicación del MVP para completar el ciclo:
+Prototipo funcional para reducir el desperdicio de alimentos completando el ciclo:
 
 `Inventario -> Receta -> Preparación -> Sobra -> Reutilización`
+
+## Demostración
+
+- **Aplicación pública:** https://sage-kelpie-5644bb.netlify.app/
+- **Repositorio independiente:** https://github.com/lariza-amoros/caldero-verde
+
+La demostración permite consultar inventario y recetas sin credenciales. Las
+operaciones que modifican datos requieren el código privado del prototipo.
+
+## Funciones del MVP
+
+- Inventario con cantidad, unidad, categoría y fecha de vencimiento.
+- Priorización de alimentos próximos a vencer.
+- Recetas con ingredientes, cantidades e instrucciones.
+- Estado **Puedes preparar** o detalle de ingredientes faltantes.
+- Preparación transaccional que descuenta primero lo que vence antes.
+- Registro de sobras y reutilización como ingredientes.
+- Conversiones seguras entre unidades compatibles y biblioteca puertorriqueña.
 
 ## Preparación en Windows y VS Code
 
