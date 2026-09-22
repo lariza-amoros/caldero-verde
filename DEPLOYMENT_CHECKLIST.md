@@ -19,12 +19,12 @@ No ejecutar estos pasos hasta recibir aprobación explícita para desplegar.
 
 ## 3. Netlify
 
-- [ ] Configurar `SUPABASE_URL` como variable de servidor.
-- [ ] Configurar `SUPABASE_SECRET_KEY` como secreto.
-- [ ] Configurar `APP_ACCESS_PIN` como secreto.
+- [x] Configurar `SUPABASE_URL` como variable de servidor.
+- [x] Configurar `SUPABASE_SECRET_KEY` como secreto.
+- [x] Configurar `APP_ACCESS_PIN` como secreto.
 - [ ] Crear primero un deploy preview único.
-- [ ] Probar lectura y una escritura controlada en preview.
-- [ ] Publicar a producción una sola vez después de aprobar el preview.
+- [x] Probar lectura pública y una escritura controlada sin insertar datos.
+- [x] Publicar a producción después de aprobación explícita.
 
 ## 4. GitHub
 

@@ -54,7 +54,9 @@ export function convert(value:number,from:unknown,to:unknown,ingredient:unknown)
 }
 
 function response(body:unknown,status=200){return new Response(JSON.stringify(body),{status,headers:jsonHeaders})}
-function env(name:string){return Netlify.env.get(name)||""}
+function env(name:string){
+  return (typeof Netlify!=="undefined"?Netlify.env.get(name):undefined)||process.env[name]||"";
+}
 function dbHeaders(extra:Record<string,string>={}){
   const key=env("SUPABASE_SECRET_KEY");
   return {apikey:key,authorization:`Bearer ${key}`,"content-type":"application/json",...extra};
@@ -170,7 +172,7 @@ async function prepareRecipe(id:number){
   return response({message:"Receta preparada; inventario actualizado.",recipe:recipe[0],updates:applied});
 }
 
-export default async (req:Request,context?:{ip?:string})=>{
+const apiHandler=async (req:Request,context?:{ip?:string})=>{
   try{
     const path=new URL(req.url).pathname.replace(/^\/api\/?/,"");
     if(req.method==="GET"&&path==="health"){const data=await rows("products","select=id&limit=1");return response({status:"ok",supabase:"connected",products_visible:data.length})}
@@ -182,4 +184,17 @@ export default async (req:Request,context?:{ip?:string})=>{
     const match=path.match(/^recipes\/(\d+)\/prepare$/);if(req.method==="POST"&&match)return await prepareRecipe(Number(match[1]));
     return response({error:"Ruta no encontrada."},404);
   }catch(error){console.error(error);if(error instanceof HttpError)return response({error:error.message},error.status);return response({error:"No se pudo completar la operación."},500)}
+};
+
+export default apiHandler;
+
+// Compatibility adapter for Netlify's Lambda runtime. Keeping the Request/
+// Response handler above makes the business logic easy to test locally.
+export const handler=async(event:any,context:any)=>{
+  const headers=new Headers(event.headers||{});
+  const url=event.rawUrl||`https://${headers.get("host")||"localhost"}${event.path||"/"}`;
+  const init:RequestInit={method:event.httpMethod||"GET",headers};
+  if(event.body&&init.method!=="GET"&&init.method!=="HEAD")init.body=event.isBase64Encoded?Buffer.from(event.body,"base64"):event.body;
+  const result=await apiHandler(new Request(url,init),{ip:headers.get("x-nf-client-connection-ip")||context?.ip});
+  return {statusCode:result.status,headers:Object.fromEntries(result.headers.entries()),body:await result.text()};
 };
