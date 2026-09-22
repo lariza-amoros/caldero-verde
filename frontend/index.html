@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Caldero Verde convierte tu inventario y sobras en comidas aprovechables.">
+  <meta name="theme-color" content="#1f5138">
+  <title>Caldero Verde</title>
+  <link rel="icon" type="image/jpeg" href="assets/caldero-verde-logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#inicio" aria-label="Caldero Verde, inicio">
+        <img src="assets/caldero-verde-logo.jpg" alt="Caldero Verde, cocina circular sostenible">
+      </a>
+      <nav aria-label="Navegación principal">
+        <a class="nav-link active" href="#inicio" data-view="inicio"><span>⌂</span> Resumen</a>
+        <a class="nav-link" href="#inventario" data-view="inventario"><span>▤</span> Inventario</a>
+        <a class="nav-link" href="#recetas" data-view="recetas"><span>⌘</span> Recetas</a>
+        <a class="nav-link" href="#sobras" data-view="sobras"><span>↺</span> Sobras</a>
+      </nav>
+      <div class="sidebar-foot">
+        <p>Lo que ya tienes<br>puede ser tu próxima comida.</p>
+        <button class="text-button" id="open-settings" type="button">Configurar conexión</button>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <button class="mobile-menu" id="mobile-menu" aria-label="Abrir menú">☰</button>
+        <div>
+          <p class="eyebrow">MI COCINA</p>
+          <h1 id="page-title">¿Qué podemos aprovechar hoy?</h1>
+        </div>
+        <div class="connection-pill" id="connection-pill"><span></span><b>Conectando</b></div>
+      </header>
+
+      <div class="notice hidden" id="notice" role="status"></div>
+
+      <section class="view active" id="view-inicio">
+        <div class="journey" aria-label="Flujo de aprovechamiento">
+          <button data-go="inventario"><span>1</span><b>Revisa</b><small>tu inventario</small></button><i aria-hidden="true">→</i>
+          <button data-go="recetas"><span>2</span><b>Elige</b><small>una receta</small></button><i aria-hidden="true">→</i>
+          <button data-go="recetas"><span>3</span><b>Cocina</b><small>con lo que tienes</small></button><i aria-hidden="true">→</i>
+          <button data-go="sobras"><span>4</span><b>Reutiliza</b><small>cada sobra</small></button>
+        </div>
+        <div class="hero-grid">
+          <article class="hero-card">
+            <p class="eyebrow light">APROVECHA PRIMERO</p>
+            <h2 id="urgent-title">Revisando tu inventario...</h2>
+            <p id="urgent-copy">Estamos buscando lo que vence más pronto.</p>
+            <button class="button button-cream" data-go="inventario">Ver inventario</button>
+            <div class="hero-orbit" aria-hidden="true"><span>✶</span></div>
+          </article>
+          <div class="stat-stack">
+            <article class="stat-card"><span class="stat-icon leaf">♧</span><div><strong id="stat-inventory">—</strong><small>alimentos disponibles</small></div></article>
+            <article class="stat-card"><span class="stat-icon sun">☀</span><div><strong id="stat-recipes">—</strong><small>recetas que puedes preparar</small></div></article>
+            <article class="stat-card"><span class="stat-icon loop">↺</span><div><strong id="stat-leftovers">—</strong><small>sobras listas para reutilizar</small></div></article>
+          </div>
+        </div>
+
+        <div class="section-heading">
+          <div><p class="eyebrow">IDEAS PARA HOY</p><h2>Recetas con lo que tienes</h2></div>
+          <button class="text-button" data-go="recetas">Ver todas</button>
+        </div>
+        <div class="recipe-grid" id="home-recipes"></div>
+
+        <div class="quick-actions">
+          <div><p class="eyebrow">ACCESOS RÁPIDOS</p><h2>¿Qué quieres hacer?</h2></div>
+          <button data-go="inventario"><span>+</span><b>Añadir alimento</b><small>Mantén tu inventario al día</small></button>
+          <button data-go="recetas"><span>⌘</span><b>Buscar una receta</b><small>Aprovecha lo que ya tienes</small></button>
+          <button data-go="sobras"><span>↺</span><b>Guardar una sobra</b><small>Dale una segunda oportunidad</small></button>
+        </div>
+      </section>
+
+      <section class="view" id="view-inventario">
+        <div class="section-heading">
+          <div><p class="eyebrow">DESPENSA Y NEVERA</p><h2>Tu inventario</h2></div>
+          <button class="button" id="toggle-product-form">+ Registrar alimento</button>
+        </div>
+        <form class="form-card hidden" id="product-form">
+          <div class="form-head"><h3>Nuevo alimento</h3><button type="button" class="icon-button" data-close-form="product-form">×</button></div>
+          <div class="form-grid">
+            <label>Alimento<input name="name" list="product-options" required placeholder="Ej. Pimientos"></label>
+            <label>Categoría<input name="category" required placeholder="Vegetales"></label>
+            <label>Cantidad<input name="quantity" type="number" min="0.01" step="0.01" required></label>
+            <label>Unidad<input name="unit" list="unit-options" required placeholder="unidad"></label>
+            <label>Fecha de vencimiento<input name="expiration_date" type="date" required></label>
+          </div>
+          <button class="button" type="submit">Guardar alimento</button>
+        </form>
+        <datalist id="product-options"></datalist><datalist id="unit-options"></datalist>
+        <div class="toolbar"><input id="inventory-search" type="search" placeholder="Buscar alimento..."><select id="inventory-filter"><option value="all">Todo</option><option value="urgent">Vence pronto</option><option value="leftover">Solo sobras</option></select></div>
+        <div class="inventory-list" id="inventory-list"></div>
+      </section>
+
+      <section class="view" id="view-recetas">
+        <div class="section-heading"><div><p class="eyebrow">COCINA CON INTENCIÓN</p><h2>Recetas</h2></div></div>
+        <div class="toolbar"><input id="recipe-search" type="search" placeholder="Buscar receta..."><select id="recipe-filter"><option value="all">Todas</option><option value="ready">Puedes preparar</option><option value="missing">Faltan ingredientes</option></select></div>
+        <div class="recipe-grid wide" id="recipe-list"></div>
+      </section>
+
+      <section class="view" id="view-sobras">
+        <div class="section-heading">
+          <div><p class="eyebrow">SEGUNDA OPORTUNIDAD</p><h2>Aprovechamiento de sobras</h2></div>
+          <button class="button" id="toggle-leftover-form">+ Registrar sobra</button>
+        </div>
+        <form class="form-card hidden" id="leftover-form">
+          <div class="form-head"><h3>Nueva sobra</h3><button type="button" class="icon-button" data-close-form="leftover-form">×</button></div>
+          <div class="form-grid">
+            <label>Receta<select name="recipe_id" id="leftover-recipe" required></select></label>
+            <label>Alimento<input name="name" required placeholder="Ej. Arroz"></label>
+            <label>Cantidad<input name="quantity" type="number" min="0.01" step="0.01" required></label>
+            <label>Unidad<input name="unit" list="unit-options" required></label>
+            <label>Consumir antes de<input name="expiration_date" type="date" required></label>
+          </div>
+          <button class="button" type="submit">Guardar sobra</button>
+        </form>
+        <div class="leftover-grid" id="leftover-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="settings-dialog">
+    <form method="dialog" class="settings-card">
+      <div class="form-head"><div><p class="eyebrow">CONEXIÓN</p><h3>Backend de Caldero Verde</h3></div><button class="icon-button" value="cancel">×</button></div>
+      <p>La aplicación selecciona automáticamente el backend local o el backend seguro de Netlify.</p>
+      <label>URL de la API<input id="api-url" type="url" placeholder="http://127.0.0.1:5000"></label>
+      <label>Código para guardar cambios<input id="access-pin" type="password" inputmode="numeric" autocomplete="one-time-code" placeholder="Código privado del prototipo"></label>
+      <div class="dialog-actions"><button class="button button-secondary" value="cancel">Cancelar</button><button class="button" id="save-settings" value="default">Guardar y conectar</button></div>
+    </form>
+  </dialog>
+
+  <template id="empty-template"><div class="empty"><span>✶</span><h3>No hay elementos para mostrar</h3><p>Registra alimentos para comenzar a aprovecharlos.</p></div></template>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

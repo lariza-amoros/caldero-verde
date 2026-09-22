@@ -1,0 +1,10 @@
+.env
+.venv/
+.venv-broken-*/
+node_modules/
+.pnpm-store/
+.netlify/
+.netlify-build/
+__pycache__/
+*.py[cod]
+.pytest_cache/

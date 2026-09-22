@@ -1,0 +1,59 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Caldero Verde: instalar dependencias",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath}",
+      "args": [
+        "-m",
+        "pip",
+        "install",
+        "-r",
+        "requirements.txt"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Caldero Verde: ejecutar pruebas",
+      "type": "shell",
+      "command": "${config:python.defaultInterpreterPath}",
+      "args": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Caldero Verde: probar Netlify Function",
+      "type": "shell",
+      "command": "node",
+      "args": [
+        "--experimental-strip-types",
+        "--test",
+        "tests-js/*.test.mjs"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Caldero Verde: verificación final local",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/preflight.ps1"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}
